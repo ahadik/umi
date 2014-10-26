@@ -12,7 +12,7 @@ var mongoose = require('mongoose');
 var io = require('socket.io')(http);
 
 // all environments
-
+app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 //app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
@@ -104,9 +104,8 @@ app.get('/view', function(req, res){
 	*/
 });
 
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(app.get('port'), function(){
+  console.log('listening on *: '+app.get('port'));
 });
 
 /*
