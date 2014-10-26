@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title></title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script>
+		  var socket = io();
+		  socket.on('reading', function(data){
+		  	for(key in data){
+			  	$('#'+key).html(data[key]);
+		  	}
+		  });
+		</script>
+	</head>
+	<body>
+		<p id="rmscurrent"><%=rmscurrent%></p>
+		<p id="rmsvolt"><%=rmsvolt%></p>
+		<p id="apparent"><%=apparent%></p>
+		<p id="real"><%=real%></p>
+		<p id="powerfactor"><%=powerfactor%></p>
+	</body>
+</html>

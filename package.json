@@ -1,0 +1,24 @@
+{
+  "name": "umi",
+  "version": "0.0.0",
+  "description": "Web application for tracking and displaying power usage in real time.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:umi-webapp.git"
+  },
+  "author": "Alexander Hadik, Nani Kim, Patrick Kim, Andrew Richards, Christina Peabody",
+  "license": "ISC",
+    "dependencies": {
+		"mongodb": "1.4.x",
+		"install": "^0.1.7",
+		"socket.io": "~0.9.6",
+		"express": "3.4.0",
+		"ejs": "~0.8.4",
+		"mongoose": "~3.6.19",
+		"socket.io": "1.0"
+	}
+}
