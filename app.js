@@ -2,12 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var https = require('https');
-//var fs = require('fs');
-//var path = require('path');
 
-//var mongodb = require('mongodb')
-//  , MongoClient = mongodb.MongoClient;
-//var ObjectID = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
 var io = require('socket.io')(http);
 
@@ -16,17 +11,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 //app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
-/*
-app.use(express.logger());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser('chip chocolate chip'));
 
-app.use(app.router);
-app.use(express.static(path.join(__dirname, '')));
-app.use(express.favicon());
-app.use(express.errorHandler());
-*/
 
 // mongoose
 mongoose.connect(process.env.COMPOSEIO_UMI);
@@ -56,16 +41,12 @@ var Reading = mongoose.model('Reading',readingSchema);
 app.get('/', function(req, res){
 	var urlQuery = require('url').parse(req.url, true);
 	if(urlQuery.query.rmscurrent){
-		console.log(urlQuery.query.rmscurrent);
-		console.log(urlQuery.query.rmsvolt);
-		console.log(urlQuery.query.apparent);
-		console.log(urlQuery.query.real);
-		console.log(urlQuery.query.powerfactor);
 		
 		var date = new Date();
 		var data = {added : date, rmscurrent : urlQuery.query.rmscurrent, rmsvolt : urlQuery.query.rmsvolt, apparent : urlQuery.query.apparent, real : urlQuery.query.real, powerfactor : 
 		urlQuery.query.powerfactor};
 		
+		console.log(data);
 		
 		io.emit('reading', data);
 		
@@ -78,14 +59,20 @@ app.get('/', function(req, res){
 		});
 	}
 	
-	//http://localhost:3000/?rmscurrent=1&rmsvolt=2&apparent=3&real=4&powerfactor=5
-	
 	
 	res.render("index",{});
 });
 
-app.post('/transmit', function(req,res){
-	console.log(req.body);
+app.get('/clear', function(req, res){
+	Reading.remove({  }, function(err) {
+	    if (!err) {
+			message.type = 'notification!';
+	    }
+	    else {
+			message.type = 'error';
+	    }
+	});
+	res.redirect('/');
 });
 
 io.on('connection', function(socket){
