@@ -84,6 +84,10 @@ app.get('/', function(req, res){
 	res.render("index",{});
 });
 
+app.post('/transmit', function(req,res){
+	console.log(req.body);
+});
+
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
