@@ -5,18 +5,139 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script>
 		  var socket = io();
-		  socket.on('reading', function(data){
-		  	for(key in data){
-			  	$('#'+key).html(data[key]);
+		  function Reading(){
+			  this.rmscurrent;
+			  this.rmsvolt;
+			  this.apparent;
+			  this.real;
+			  this.powerfactor;
+		  }
+		  
+		  var oldReading = new Reading();
+		  var currReading = new Reading();
+		  
+		  Reading.prototype.create=function(rmscurrent,rmsvolt,apparent,real,powerfactor){
+			  this.rmscurrent=rmscurrent;
+			  this.rmsvolt = rmsvolt;
+			  this.apparent = apparent;
+			  this.real = real;
+			  this.powerfactor = powerfactor;
+		  }
+		  
+		  Reading.prototype.update = function(){
+			  this.create($('#rmscurrent').html(), $('#rmsvolt').html(), $('#apparent').html(), $('#real').html(), $('#powerfactor').html());
+			  initGraph();
+		  }
+		  
+		  Reading.prototype.transfer = function(reading){
+			  this.rmscurrent = reading.rmscurrent;
+			  this.rmsvolt = reading.rmsvolt;
+			  this.apparent = reading.apparent;
+			  this.real = reading.real;
+			  this.powerfactor = reading.powerfactor;
+		  }
+		  
+		  $(document).ready(function(){
+			  oldReading.create(0,0,0,0,0);
+			  currReading.update();
+		  });
+		  
+		  function initGraph(data){
+		  	if(!data){
+			  	data = {"rmscurrent" : $('#rmscurrent').html(), "rmsvolt" : $('#rmsvolt').html(), "apparent" : $('#apparent').html(), "real" : $('#real').html(), "powerfactor" : $('#powerfactor').html()}
 		  	}
+			for(key in data){
+				$('#'+key).html(data[key]);
+				
+				$('#'+key+'_bar').animate({
+					width : (data[key]/300)*80+'%'
+				},1000);
+			}
+		  }
+		  
+		  socket.on('reading', function(data){
+		  	initGraph(data);
+		  	oldReading.transfer(currReading);
+		  	currReading.update();
 		  });
 		</script>
+		<style>
+			body{
+				font-family: sans-serif;
+			}
+			#graph{
+				position: relative;
+				margin-left: auto;
+				margin-right: auto;
+				width: 400px;
+				overflow: hidden;
+			}
+			.bar{
+				position: relative;
+				float: left;
+				height: 40px;
+			}
+			.barWrap{
+				position: relative;
+				float: left;
+				margin-bottom: 10px;
+				height: 40px;
+				width: 100%;
+			}
+			.bardescriptor{
+				position: relative;
+				float: left;
+				width: 20%;
+				font-size: small;
+				margin-right: 10px;
+				height: 40px;
+			}
+			#rmscurrent_bar{
+				background-color: #FF0D7F;
+			}
+			#rmsvolt_bar{
+				background-color: #4A53E8;
+			}
+			#apparent_bar{
+				background-color: #00FF9E;
+			}
+			#real_bar{
+				background-color: #E0E83C;
+			}
+			#powerfactor_bar{
+				background-color: #FF9430;
+			}
+		</style>
 	</head>
 	<body>
-		<p id="rmscurrent"><%=rmscurrent%></p>
-		<p id="rmsvolt"><%=rmsvolt%></p>
-		<p id="apparent"><%=apparent%></p>
-		<p id="real"><%=real%></p>
-		<p id="powerfactor"><%=powerfactor%></p>
+		<div style="display:none;">
+			<p id="rmscurrent"><%=rmscurrent%></p>
+			<p id="rmsvolt"><%=rmsvolt%></p>
+			<p id="apparent"><%=apparent%></p>
+			<p id="real"><%=real%></p>
+			<p id="powerfactor"><%=powerfactor%></p>
+		</div>
+		<div id="graph">
+			<div class="barWrap">
+				<span class="bardescriptor">RMS Current</span>
+				<div id="rmscurrent_bar" class="bar"></div>
+			</div>
+			<div class="barWrap">
+				<span class="bardescriptor">RMS Voltage</span>
+				<div id="rmsvolt_bar" class="bar"></div>
+			</div>
+			<div class="barWrap">
+				<span class="bardescriptor">Apparent Power</span>
+				<div id="apparent_bar" class="bar"></div>
+			</div>
+			<div class="barWrap">
+				<span class="bardescriptor">Real Power</span>
+				<div id="real_bar" class="bar"></div>
+			</div>
+			<div class="barWrap">
+				<span class="bardescriptor">Power Factor</span>
+				<div id="powerfactor_bar" class="bar"></div>
+			</div>
+		</div>
 	</body>
 </html>

@@ -86,7 +86,11 @@ app.get('/view', function(req, res){
 
 
 	Reading.findOne({}, {}, { sort: { 'added' : -1 } }, function(err, read) {
-	  res.render('view', read);
+		if(read==null){
+			res.render('view', {"rmscurrent": 0, "rmsvolt": 0, "apparent": 0, "real": 0, "powerfactor": 0});
+		}else{
+			res.render('view', read);
+		}
 	});
 /*
 	Reading.findOne( { rmscurrent:1}, function(err,read) {
