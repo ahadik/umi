@@ -369,6 +369,15 @@ input.register_field{
 	line-height: 52px;
 }
 
+.data_device_half:first-of-type{
+	padding-left: 2%;
+	width: 40%;
+}
+
+.data_device_half:last-of-type{
+	width: 55%;
+}
+
 .switch{
 	position: relative;
 	float: right;
