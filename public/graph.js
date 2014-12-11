@@ -77,7 +77,7 @@
         d3.select(ce).selectAll('*').remove();
         vis = d3.select(ce)
           .append('svg:svg')
-            .attr('width', 360)
+            .attr('width', 340)
             .attr('height', 200);
             
         svg = d3.select(ce).select('svg');

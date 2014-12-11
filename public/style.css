@@ -308,7 +308,7 @@ input.register_field{
 	position: relative;
 	margin-left: auto;
 	margin-right: auto;
-	width: 394px;
+	width: 370px;
 	height: 67px;
 	background-color: rgba(0, 0, 0, 0.5);
 	margin-top: 10px;
@@ -331,7 +331,7 @@ input.register_field{
 }
 
 .overview_third span{
-	font-size: 25px;
+	font-size: 20px;
 }
 
 .overview_third:first-of-type{
@@ -349,25 +349,29 @@ input.register_field{
 	background-color: rgba(0, 0, 0, 0.5);
 	border-radius: 10px;
 	height: 52px;
-	width: 394px;
+	width: 370px;
 	margin-bottom: 10px;
 	overflow: hidden;
 }
 
 .device_half:first-of-type{
 	padding-left: 2%;
+	width: 55%;
+}
+
+.device_half:last-of-type{
+	width: 38%;
 }
 
 .device_half{
 	position: relative;
 	float: left;
-	width: 46%;
 	line-height: 52px;
 }
 
 .switch{
 	position: relative;
-	float: left;
+	float: right;
 	width: 72px;
 	height: 26px;
 	border: 2px solid white;
@@ -455,8 +459,8 @@ input.register_field{
 
 .data_wrap{
 	position: relative;
-	float: left;
-	margin-left: 10px;
+	float: right;
+	margin-left: 5px;
 }
 
 .device_header{

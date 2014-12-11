@@ -7,10 +7,12 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="style.css" title="UMI Style" type="text/css" media="screen" charset="utf-8">
+		<script src="/socket.io/socket.io.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.24.0"></script>
 		<script src="cost_data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="energy_data.js" type="text/javascript" charset="utf-8"></script>
+		<script src="data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="src.js" charset="utf-8"></script>
 	</head>
 	<body>
@@ -48,371 +50,50 @@
 		<div class="utility_overview">
 			<div class="overview_third">
 				<h2>Avg. $/kWh</h2>
-				<span>12.30</span>
+				<span>$</span><span id="overview_avg">0.17</span>
 			</div>
 			<div class="overview_third">
 				<h2>Total</h2>
-				<span>123 </span><span>kWh</span>
+				<span id="overview_total_energy">11023 </span><span style="font-size: 15px;"> kWh</span>
 			</div>
 			<div class="overview_third">
 				<h2>Total</h2>
-				<span>$123.00</span>
+				<span>$</span><span id="overview_total_cost">1742</span>
 			</div>
 		</div>
 		<div id="lights" class="view">
 			<div class="view_wrapper">
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
+				
+				<%for(var i = 0; i<lights.length; i++){%>
+					<div class="device" device_id="<%=lights[i].id%>">
+						<div class="device_half">
+							<h1 style="position:relative; float: left;"><%=lights[i].room%></h1>
+							<%if(lights[i].state == 1){%>
+								<div class="switch" status="on">
+									<div class="switch_wrap on">
+							<%}else{%>
+								<div class="switch" status="off">
+									<div class="switch_wrap off">
+							<%}%>
+									<div class="switch_option">
+										<span>ON</span>
+									</div>
+									<div class="switch_block">
+									</div>
+									<div class="switch_option">
+										<span>OFF</span>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
+						<div class="device_half">
+							
+							<div class="data_wrap">
+								<h1><span class="device_energy"><%=lights[i].energy%> kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$<%=lights[i].cost%></span></h1>
 							</div>
 						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
 					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
+				<%}%>
 			</div>
 		</div>
 		<div id="data" class="view">
@@ -431,13 +112,13 @@
 						</div>
 					</div>
 					<div class="device_data">
-						<div style="position: relative; float: left; width: 100%; overflow: hidden; margin-bottom: 10px; margin-left: 20px;">
+						<div style="position: relative; float: left; overflow: hidden; margin-bottom: 10px; margin-left: 20px;">
 							<div class="data_type_button" onclick="$('#chart').trigger('change-type', [ 0 ])"></div> 
 							<span style="position: relative; float: left; margin-left:10px; margin-right:10px;">Energy</span>
 							<div class="data_type_button active" onclick="$('#chart').trigger('change-type', [ 1 ])"></div>
 							<span style="position: relative; float: left; margin-left:10px; margin-right:10px;">Cost</span>
 						</div>
-						<div id="chart" style="width:360px;height:170px;" class="resizable"></div>
+						<div id="chart" style="width:340px;height:170px;" class="resizable"></div>
 						<div id="year_nav" class="graph_nav time_nav_active">
 							<div class="time_prev">
 								<span>2013</span>
@@ -505,371 +186,50 @@
 		</div>
 		<div id="sockets" class="view">
 			<div class="view_wrapper">
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
+				
+				<%for(var i = 0; i<sockets.length; i++){%>
+					<div class="device" device_id="1">
+						<div class="device_half">
+							<h1 style="position:relative; float: left;"><%=sockets[i].socket%></h1>
+							<%if(sockets[i].state == 1){%>
+								<div class="switch" status="on">
+									<div class="switch_wrap on">
+							<%}else{%>
+								<div class="switch" status="off">
+									<div class="switch_wrap off">
+							<%}%>
+									<div class="switch_option">
+										<span>ON</span>
+									</div>
+									<div class="switch_block">
+									</div>
+									<div class="switch_option">
+										<span>OFF</span>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
+						<div class="device_half">
+							
+							<div class="data_wrap">
+								<h1><span class="device_energy"><%=sockets[i].energy%> kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$<%=sockets[i].cost%></span></h1>
 							</div>
 						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
 					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
-				<div class="device" device_id="1">
-					<div class="device_half">
-						<h1>Bedroom A</h1>
-					</div>
-					<div class="device_half">
-						<div class="switch" status="on">
-							<div class="switch_wrap on">
-								<div class="switch_option">
-									<span>ON</span>
-								</div>
-								<div class="switch_block">
-								</div>
-								<div class="switch_option">
-									<span>OFF</span>
-								</div>
-							</div>
-						</div>
-						<div class="data_wrap">
-							<h1><span class="device_energy">5 kWh</span>&nbsp;&nbsp;&nbsp;<span class="device_cost">$1.23</span></h1>
-						</div>
-					</div>
-				</div>
+				<%}%>
 			</div>
 		</div>
 		<div id="time">
-			<div class="time_part" onclick="$('#chart').trigger('change-domain', [ 3 ])">
+			<div class="time_part" type="daily" onclick="$('#chart').trigger('change-domain', [ 3 ])">
 				<h2>Daily</h2>
 			</div>
-			<div class="time_part" onclick="$('#chart').trigger('change-domain', [ 2 ])">
+			<div class="time_part" type="weekly" onclick="$('#chart').trigger('change-domain', [ 2 ])">
 				<h2>Weekly</h2>
 			</div>
-			<div class="time_part" onclick="$('#chart').trigger('change-domain', [ 1 ])">
+			<div class="time_part" type="monthly" onclick="$('#chart').trigger('change-domain', [ 1 ])">
 				<h2>Monthly</h2>
 			</div>
-			<div class="time_part selected" onclick="$('#chart').trigger('change-domain', [ 0 ])">
+			<div class="time_part selected" type="yearly" onclick="$('#chart').trigger('change-domain', [ 0 ])">
 				<h2>Yearly</h2>
 			</div>
 		</div>

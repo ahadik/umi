@@ -1,6 +1,47 @@
+var socket = io();
+socket.on('reading', function(data){
+	var ref = $("device_id=1");
+	$('.device_energy', ref).html(data.real);
+	$('.device_cost', ref).html(data.real);
+});
+
 $(document).ready(function(){
 	$('.view').hide();
 	$('#data').show();
+	
+	var date = new Date();
+	var day = date.getDay();
+	
+	var weekday = new Array(7);
+	weekday[0]=  "Sunday";
+	weekday[1] = "Monday";
+	weekday[2] = "Tuesday";
+	weekday[3] = "Wednesday";
+	weekday[4] = "Thursday";
+	weekday[5] = "Friday";
+	weekday[6] = "Saturday";
+	
+	var month = new Array(12);
+	month[0]=  "Jan";
+	month[1] = "Feb";
+	month[2] = "Mar";
+	month[3] = "Apr";
+	month[4] = "May";
+	month[5] = "June";
+	month[6] = "Jul";
+	month[7] = "Aug";
+	month[8] = "Sep";
+	month[9] = "Oct";
+	month[10] = "Nov";
+	month[11] = "Dec";
+	
+	var month_text = month[date.getMonth()];
+	var day_text = weekday[day];
+	var date_text = date.getDate();
+	var year = date.getFullYear();
+	
+	$("#header_day").html(day_text);
+	$('#header_date').html(date_text+' '+month_text+' '+year);
 	
 	$('.graph_nav').hide();
 	$('.graph_nav.time_nav_active').show();
@@ -43,6 +84,32 @@ $(document).ready(function(){
 			$(this).addClass("expand");
 			
 			$(".data_indicator", this).addClass("down");
+		}
+	});
+	
+	$('.time_part').bind("click", function(event){
+		if($(this).attr('type') == 'daily'){
+			$("#overview_avg").html(overviewdata.daily.avg);
+			$("#overview_total_energy").html(overviewdata.daily.total_energy);
+			$("#overview_total_cost").html(overviewdata.daily.total_cost);
+		}
+		
+		if($(this).attr('type') == 'weekly'){
+			$("#overview_avg").html(overviewdata.weekly.avg);
+			$("#overview_total_energy").html(overviewdata.weekly.total_energy);
+			$("#overview_total_cost").html(overviewdata.weekly.total_cost);
+		}
+		
+		if($(this).attr('type') == 'monthly'){
+			$("#overview_avg").html(overviewdata.monthly.avg);
+			$("#overview_total_energy").html(overviewdata.monthly.total_energy);
+			$("#overview_total_cost").html(overviewdata.monthly.total_cost);
+		}
+		
+		if($(this).attr('type') == 'yearly'){
+			$("#overview_avg").html(overviewdata.yearly.avg);
+			$("#overview_total_energy").html(overviewdata.yearly.total_energy);
+			$("#overview_total_cost").html(overviewdata.yearly.total_cost);
 		}
 	});
 	

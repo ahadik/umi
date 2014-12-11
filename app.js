@@ -20,6 +20,34 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 var sess;
 
+var lights = [
+	{room : "Kitchen", state : 0, energy : 1.23, cost : 1.23, id : 1},
+	{room : "Living Room", state : 0, energy : 1.23, cost : 1.23, id : 2},
+	{room : "Foyer", state : 1, energy : 1.23, cost : 1.23, id : 3},
+	{room : "Office", state : 1, energy : 1.23, cost : 1.23, id : 4},
+	{room : "Master Bedroom", state : 1, energy : 1.23, cost : 1.23, id : 5},
+	{room : "Christina's Room", state : 0, energy : 1.23, cost : 1.23, id : 6},
+	{room : "Nani's Room", state : 0, energy : 1.23, cost : 1.23, id : 7},
+	{room : "Patrick's Room", state : 1, energy : 1.23, cost : 1.23, id : 8},
+	{room : "Alex's Room", state : 0, energy : 1.23, cost : 1.23, id : 9},
+	{room : "Andrew's Room", state : 1, energy : 1.23, cost : 1.23, id : 10},
+	{room : "Guest Room", state : 0, energy : 1.23, cost : 1.23, id : 11},
+	{room : "Master Bathroom", state : 0, energy : 1.23, cost : 1.23, id : 12},
+	{room : "Half Bath", state : 1, energy : 1.23, cost : 1.23, id : 13},
+	{room : "Basement", state : 1, energy : 1.23, cost : 1.23, id : 14},
+	{room : "Garage", state : 0, energy : 1.23, cost : 1.23, id : 15}
+];
+
+var sockets = [
+	{socket : "Refridgerator", state : 1, energy : 1.23, cost : 1.23},
+	{socket : "Microwave", state : 0, energy : 1.23, cost : 1.23},
+	{socket : "Home Theater", state : 0, energy : 1.23, cost : 1.23},
+	{socket : "Office Computer", state : 1, energy : 1.23, cost : 1.23},
+	{socket : "Patrick's Stereo", state : 1, energy : 1.23, cost : 1.23},
+	{socket : "Floor Lamp", state : 0, energy : 1.23, cost : 1.23},
+	{socket : "Space Heater", state : 1, energy : 1.23, cost : 1.23}
+];
+
 
 // mongoose
 mongoose.connect(process.env.COMPOSEIO_UMI);
@@ -79,9 +107,9 @@ app.post('/login', function(req, res){
 app.get('/app', function(req, res){
 	sess=req.session;
 	if(sess.user){
-		res.render('app.ejs');
+		res.render('app.ejs',{lights : lights, sockets : sockets});
 	}else{
-		res.redirect('/login');
+		res.redirect('/');
 	}
 });
 
