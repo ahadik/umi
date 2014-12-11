@@ -4,6 +4,7 @@
 		<title>UMI Power Monitor</title>
 		<meta name="viewport" content="width=device-width">
 		<link rel="apple-touch-startup-image" href="launch6.png" media="(device-width: 375px)">
+		<link rel="apple-touch-icon" href="resources/launch.png">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="style.css" title="UMI Style" type="text/css" media="screen" charset="utf-8">
@@ -32,13 +33,20 @@
 		            viewport: scream
 		        });
 		    });
+		    var socket = io();
+			socket.on('reading', function(data){
+				alert("Hello! I am an alert box!!");
+				var ref = $("device_id=1");
+				$('.device_energy', ref).html(data.real);
+				$('.device_cost', ref).html(data.real*.17);
+			});
 	</script>
 	</head>
 	<body>
-		<div id="brim-mask">
+		<!<div id="brim-mask">
 	        <!Content displayed to the user when in full view. -->
-	    </div>
-	    <div id="brim-main">
+	    <!</div>
+	    <!<div id="brim-main">
 	        <!-- Content displayed to the user when in minimal view.  -->
 			<div id="header">
 				<div class="header_part" id="header_left">
@@ -258,6 +266,6 @@
 				</div>
 			</div>
 			<script src="graph.js" type="text/javascript" charset="utf-8"></script>
-		</div>
+		<!</div>
 	</body>
 </html>

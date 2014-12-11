@@ -146,10 +146,6 @@ app.get('/submit', function(req, res){
 			temp_status = 0;
 		}
 		
-		if(temp_status != light_status){
-			io.emit('light_change', temp_status);
-		}
-		
 		light_status = temp_status;
 		
 		io.emit('reading', data);
