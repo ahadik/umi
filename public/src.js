@@ -2,7 +2,7 @@ var socket = io();
 socket.on('reading', function(data){
 	var ref = $("device_id=1");
 	$('.device_energy', ref).html(data.real);
-	$('.device_cost', ref).html(data.real);
+	$('.device_cost', ref).html(data.real*.17);
 });
 
 $(document).ready(function(){
@@ -138,7 +138,7 @@ $(document).ready(function(){
 	
 	var height = $(window).height();
 	
-	$('.view').css("height", height-287);
+	$('.view').css("height", height-217);
 	
 });
 

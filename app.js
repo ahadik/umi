@@ -21,21 +21,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 var sess;
 
 var lights = [
-	{room : "Kitchen", state : 0, energy : 1.23, cost : 1.23, id : 1},
-	{room : "Living Room", state : 0, energy : 1.23, cost : 1.23, id : 2},
-	{room : "Foyer", state : 1, energy : 1.23, cost : 1.23, id : 3},
-	{room : "Office", state : 1, energy : 1.23, cost : 1.23, id : 4},
-	{room : "Master Bedroom", state : 1, energy : 1.23, cost : 1.23, id : 5},
-	{room : "Christina's Room", state : 0, energy : 1.23, cost : 1.23, id : 6},
-	{room : "Nani's Room", state : 0, energy : 1.23, cost : 1.23, id : 7},
-	{room : "Patrick's Room", state : 1, energy : 1.23, cost : 1.23, id : 8},
-	{room : "Alex's Room", state : 0, energy : 1.23, cost : 1.23, id : 9},
-	{room : "Andrew's Room", state : 1, energy : 1.23, cost : 1.23, id : 10},
-	{room : "Guest Room", state : 0, energy : 1.23, cost : 1.23, id : 11},
-	{room : "Master Bathroom", state : 0, energy : 1.23, cost : 1.23, id : 12},
-	{room : "Half Bath", state : 1, energy : 1.23, cost : 1.23, id : 13},
-	{room : "Basement", state : 1, energy : 1.23, cost : 1.23, id : 14},
-	{room : "Garage", state : 0, energy : 1.23, cost : 1.23, id : 15}
+	{room : "Kitchen", state : 0, energy : 40.27, cost : 6.56, id : 1},
+	{room : "Living Room", state : 0, energy : 14.23, cost : 2.73, id : 2},
+	{room : "Foyer", state : 1, energy : 32.98, cost : 5.41, id : 3},
+	{room : "Office", state : 1, energy : 25.84, cost : 3.13, id : 4},
+	{room : "Master Bedroom", state : 1, energy : 13.65, cost : 2.63, id : 5},
+	{room : "Christina's Room", state : 0, energy : 31.46, cost : 4.82, id : 6},
+	{room : "Nani's Room", state : 0, energy : 10.67, cost : 1.23, id : 7},
+	{room : "Patrick's Room", state : 1, energy : 56.94, cost : 8.23, id : 8},
+	{room : "Alex's Room", state : 0, energy : 35.76, cost : 5.23, id : 9},
+	{room : "Andrew's Room", state : 1, energy : 14.65, cost : 2.23, id : 10},
+	{room : "Guest Room", state : 0, energy : 9.26, cost : 1.45, id : 11},
+	{room : "Master Bathroom", state : 0, energy : 4.71, cost : 0.54, id : 12},
+	{room : "Half Bath", state : 1, energy : 5.35, cost : 0.84, id : 13},
+	{room : "Basement", state : 1, energy : 2.92, cost : 0.43, id : 14},
+	{room : "Garage", state : 0, energy : 5.82, cost : 0.83, id : 15}
 ];
 
 var sockets = [
