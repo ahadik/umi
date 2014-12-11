@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=375">
+		<link rel="apple-touch-startup-image" href="launch6.png" media="(device-width: 375px)">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="style.css" title="UMI Style" type="text/css" media="screen" charset="utf-8">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="src.js" charset="utf-8"></script>
+		<script>
+			$(document).ready(function(){
+			    var email,pass;
+			    $("#submit").click(function(){
+			        user=$("#email").val();
+			        pass=$("#password").val();
+			        /*
+			        * Perform some validation here.
+			        */
+			        
+			        $.post("http://localhost:3000/login",{user:email,user:pass},function(data){        
+			            if(data==='done')           
+			            {
+			                window.location.href="/app";
+			            }
+			        });
+			    });
+			});
+		</script>
+		<script src="scream/dist/scream.js"></script>
+	    <script src="brim/dist/brim.js"></script>
+	    <script>
+		    window.addEventListener('DOMContentLoaded', function () {
+		        var scream,
+		            brim;
+		
+		        scream = gajus.Scream({
+		            width: {
+		                portrait: 375,
+		                landscape: 640
+		            }
+		        });
+		
+		        brim = gajus.Brim({
+		            viewport: scream
+		        });
+		    });
+	</script>
+	</head>
+	<body>
+		
+		<!<div id="brim-mask">
+	        <!-- Content displayed to the user when in full view. -->
+	    <!</div>
+	    <!<div id="brim-main">
+		    <div id="register" class="view">
+				<div class="view_wrapper">
+					<div id="logo">
+					</div>
+					<div id="form">
+						<form>
+							<input type="email" placeholder="Email" id="email" class="register_field">
+							<input type="text" placeholder="Username" id="username" class="register_field">
+							<input type="password" placeholder="Password" id="password" class="register_field">
+							<input type="password" placeholder="Confirm Password" id="confirm_password" class="register_field">
+							<input type="text" pattern="\d*" placeholder="UMI Hub Code" id="code" class="register_field">
+							<button id="submit" type="submit" onclick="return false;">Sign Up</button>
+							<div id="alternate_entrance"><span>or <a href="/">Login</a> with an existing account.</span></div>
+						</form>
+					</div>
+				</div>
+			</div>
+	    <!</div>
+	</body>
+</html>

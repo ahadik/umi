@@ -1,0 +1,47 @@
+{
+  "name": "scream",
+  "description": "Dynamic viewport management for mobile. Manage viewport in different states of device orientation. Scale document to fit viewport. Calculate the dimensions of the minimal iOS 8 view relative to your viewport width.",
+  "keywords": [
+    "viewport",
+    "fullscreen",
+    "minimal",
+    "ios"
+  ],
+  "version": "2.0.7",
+  "main": "src/scream.js",
+  "author": {
+    "name": "Gajus Kuizinas",
+    "email": "gk@anuary.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gajus/scream"
+  },
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "del": "^0.1.3",
+    "gulp": "^3.8.9",
+    "gulp-browserify": "^0.5.0",
+    "gulp-header": "^1.2.2",
+    "gulp-jshint": "^1.8.5",
+    "gulp-mocha": "^1.1.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.0.1",
+    "jsonfile": "^2.0.0"
+  },
+  "dependencies": {
+    "orientationchangeend": "^1.1.2",
+    "platform": "^1.2.0",
+    "sister": "^3.0.0"
+  },
+  "readme": "# Scream\n\n[![NPM version](https://badge.fury.io/js/scream.svg)](http://badge.fury.io/js/scream)\n[![Bower version](https://badge.fury.io/bo/scream.svg)](http://badge.fury.io/bo/scream)\n\nDynamic viewport management for mobile. Manage `viewport` in different states of device orientation. Scale document to fit viewport. Calculate the dimensions of the \"minimal\" iOS 8 view relative to your viewport width.\n\n![Demonstration using iOS simulator](./.readme/demonstration.gif)\n\n## Contents\n\n- [Managing the Viewport](#managing-the-viewport)\n    - [Configuration](#configuration)\n- [Events](#events)\n    - [Orientation Change](#orientation-change)\n    - [View Change](#view-change)\n- [Screen](#screen)\n- [Viewport](#viewport)\n- [Minimal View](#minimal-view)\n- [Download](#download)\n\n\n\n## Managing the Viewport\n\nConfigure dimensions of the viewport at the time of the initialization:\n\n```js\nvar scream = Scream({\n    width: {\n        portrait: 320,\n        landscape: 640\n    }\n});\n```\n\nScream generates the `viewport` meta tag to reflect the present orientation and in response to the [`orientationchangeend`](https://github.com/gajus/orientationchangeend) event.\n\n```html\n<meta name=\"viewport\" content=\"width={width},initial-scale={scale},minimum-scale={scale},maximum-scale={scale},user-scale=0\">\n```\n\n* `{width}` the width set in the configuration for the current orientation.\n* `{scale}` calculated scale needed to fit the document in the screen.\n\n### Configuration\n\n| Name | Description | Default |\n| --- | --- | --- |\n| `width.portrait` | Viewport width in the portrait orientation. | `screen.width` (`device-width`) |\n| `width.landscape` | Viewport width in the landscape orientation. | `screen.width` (`device-width`) |\n\n## Events\n\n### Orientation Change\n\n> The `orientationchangeend` event is fired when the orientation of the device has changed and the associated rotation animation has been complete.\n\n– https://github.com/gajus/orientationchangeend\n\nThis is proxy for your convenience to perform operations that must follow the change of the device orientation and in the context of updated viewport tag. This is required when determining the view state.\n\n```js\nscream.on('orientationchangeend', function () {\n    // Invoked after the orientation change and the associated animation (iOS) has been completed.\n});\n```\n\n### View Change\n\nInvoked on page load and when view changes.\n\n```js\nscream.on('viewchange', function (e) {\n    // @var {String} 'full', 'minimal'\n    e.viewName;\n});\n```\n\n## Screen\n\n```js\n/**\n * @return {String} portrait|landscape\n */\nscream.getOrientation();\n\n/**\n * Screen width relative to the device orientation.\n *\n * @return {Number}\n */\nscream.getScreenWidth();\n\n/**\n * Screen width relative to the device orientation.\n *\n * @return {Number}\n */\nscream.getScreenHeight();\n```\n\n## Viewport\n\n```js\n/**\n * Viewport width relative to the device orientation.\n * \n * @return {Number}\n */\nscream.getViewportWidth();\n\n/**\n * Viewport height relative to the device orientation and to scale with the viewport width.\n *\n * @return {Number}\n */\nscream.getViewportHeight();\n\n/**\n * The ratio between screen width and viewport width.\n *\n * @return {Number}\n */\nscream.getScale();\n```\n\n## Minimal View\n\nThis functionality is iOS 8 specific. It has been developed as part of [Brim](https://github.com/gajus/brim) to bring back the minimal-ui.\n\n```js\n/**\n * Returns dimensions of the usable viewport in the minimal view relative to the current viewport width and orientation.\n * \n * @return {Object} dimensions\n * @return {Number} dimensions.width\n * @return {Number} dimensions.height\n */\nscream.getMinimalViewSize();\n\n/**\n * Returns true if screen is in \"minimal\" UI.\n *\n * iOS 8 has removed the minimal-ui viewport property.\n * Nevertheless, user can enter minimal-ui using touch-drag-down gesture.\n * This method is used to detect if user is in minimal-ui view.\n *\n * In case of orientation change, the state of the view can be accurately\n * determined only after orientationchangeend event.\n * \n * @return {Boolean}\n */\nscream.isMinimalView();\n```\n\n## Download\n\nUsing [Bower](http://bower.io/):\n\n```sh\nbower install scream\n```\n\nUsing [NPM](https://www.npmjs.org/):\n\n```sh\nnpm install scream\n```\n\nThe old-fashioned way, download either of the following files:\n\n* https://raw.githubusercontent.com/gajus/scream/master/dist/scream.js\n* https://raw.githubusercontent.com/gajus/scream/master/dist/scream.min.js\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/gajus/scream/issues"
+  },
+  "homepage": "https://github.com/gajus/scream",
+  "_id": "scream@2.0.7",
+  "_shasum": "7bdc79f6a93df569b2e6cecf48cc3b68df74a19a",
+  "_from": "scream@",
+  "_resolved": "https://registry.npmjs.org/scream/-/scream-2.0.7.tgz"
+}

@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+  <head>    
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />     
+    <title>resizable-total-pending</title>    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.24.0"></script>
+    <style type="text/css"> 
+    .area-total { fill: orange; } 
+    .line-total { 
+       fill: none;
+       stroke: darkorange;
+       stroke-width: 1.5px;
+     }
+    </style>                      
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $(window).resize(function() { $('.resizable').resize(); })
+    });
+    </script>                       
+    
+  </head>
+<body>
+            
+  <button onclick="$('#chart').trigger('change-scale', [ 0 ])">360</button> 
+  <button onclick="$('#chart').trigger('change-scale', [ 180 ])">180</button>
+  <button onclick="$('#chart').trigger('change-scale', [ 270 ])">90</button>
+  <button onclick="$('#chart').trigger('change-scale', [ 330 ])">30</button>
+
+  <div id="chart" style="width:100%;height:300px;" class="resizable"></div>
+  <script src="history.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script type="text/javascript">
+
+    (function(ce) {
+                 
+      var data = [ ];
+      var start = 0;
+      
+      var minihistory = historydata.history.values.map(function(d) { return { d: d.date, x: d.value.total, y: d.value.pending }; }).reverse();
+      data = minihistory;
+        
+      draw(true);
+
+    function draw(flush) {
+      
+      var fdata = data.filter(function(d, i) { return i >= start; });
+
+      w = $(ce).width();
+      h = $(ce).height();
+      x = d3.scale.linear().domain([d3.min(fdata, function(d) { return d.d; }), d3.max(fdata, function(d) { return d.d; })]).range([0, w]);
+      y = d3.scale.linear().domain([0, d3.max(fdata, function(d) { return Math.max(d.x, d.y); })]).range([h, 0]);
+
+      var vis; 
+      if(flush) {
+        d3.select(ce).selectAll('*').remove();
+        vis = d3.select(ce)
+          .append('svg:svg')
+            .attr('width', w)
+            .attr('height', h)
+          .append('svg:g');
+      } else {
+        vis = d3.select(ce).select('svg').select('g');
+      }
+
+      // area
+
+      var areaTotalSvg = d3.svg.area()
+          .x(function(d) { return x(d.d); })
+          .y0(h)
+          .y1(function(d) { return y(d.x); });
+
+      var areaTotal = vis.selectAll('.area-total').data([1]);
+      areaTotal.enter().append('svg:path')
+        .data([data])
+          .attr('class', 'area-total')
+          .attr('d', areaTotalSvg);
+
+      var lineTotalSvg = d3.svg.line()
+          .x(function(d) { return x(d.d); })
+          .y(function(d) { return y(d.x); });
+      
+      var lineTotal = vis.selectAll('.line-total').data([1]);
+      lineTotal.enter().append('svg:path')
+        .data([data])
+          .attr('class', 'line-total')
+          .attr('d', lineTotalSvg);    
+      
+
+      if (!flush) {       
+        areaTotal.data([data]).transition().attr('d', areaTotalSvg); 
+        lineTotal.data([data]).transition().attr('d', lineTotalSvg);         
+      }
+
+      // line rules
+        
+      var lineRuleAttributes = function(selection) {
+        selection
+          .attr('x1', 0)
+          .attr('x2', w)
+          .attr('y1', y)
+          .attr('y2', y);
+      };
+      
+      var lineRule = vis.selectAll('line.rule')
+        .data(y.ticks(4))
+        .call(lineRuleAttributes);
+
+      lineRule.enter().append('svg:line')
+        .attr('class', 'rule')
+        .call(lineRuleAttributes)
+        .attr('stroke', 'lightgray');               
+      lineRule.exit()
+        .remove();
+
+      // text rules
+
+      var textRuleAttributes = function(selection) {
+        selection
+          .attr('x', 0)
+          .attr('y', y)
+          .text(function(d) { return d; });
+      }
+        
+      var textRule = vis.selectAll('text.rule')
+        .data(y.ticks(4))
+        .call(textRuleAttributes);      
+      textRule.enter().append('svg:text')
+        .attr('class', 'rule')
+        .call(textRuleAttributes);                               
+      textRule.exit()
+        .remove();
+
+      // x axis
+
+      vis.selectAll('line.xaxis')
+          .data([1])
+        .enter().append('svg:line')
+          .attr('x1', 0)
+          .attr('x2', w)
+          .attr('y1', y(0))
+          .attr('y2', y(0))
+          .attr('stroke', 'black') 
+          .attr('stroke-width', 3);              
+
+    }
+
+
+    $(ce).resize(function() { draw(true); });  
+    
+    $(ce).bind('change-scale', function(event, s) {    
+      start = s;  
+      draw(false);
+    });
+
+    })('#chart');
+     
+  </script>
+</body>

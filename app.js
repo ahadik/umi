@@ -1,4 +1,6 @@
 var express = require('express');
+var session = require('express-session');
+var bodyParser = require('body-parser');
 var app = express();
 var http = require('http').Server(app);
 var https = require('https');
@@ -10,7 +12,13 @@ var io = require('socket.io')(http);
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 //app.use(express.static(__dirname + '/public'));
-app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+app.use(express.static(__dirname + '/public'));
+app.use(session({secret: 'energy-studio-2014'}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+var sess;
 
 
 // mongoose
@@ -38,15 +46,83 @@ readingSchema.methods.readValues= function() {
 
 var Reading = mongoose.model('Reading',readingSchema);
 
+var light_status = 0;
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
+app.get('/graph', function(req, res){
+	res.render('graph.ejs');
+});
+
 app.get('/', function(req, res){
+	sess=req.session;
+	if(sess.user){
+		res.redirect('/app');
+	}else{
+		res.render('login.ejs');
+	}
+});
+
+app.post('/login', function(req, res){
+	console.log("here");
+	sess = req.session;
+	
+	sess.user=req.body.user;
+	res.end('done');
+});
+
+app.get('/app', function(req, res){
+	sess=req.session;
+	if(sess.user){
+		res.render('app.ejs');
+	}else{
+		res.redirect('/login');
+	}
+});
+
+app.get('/logout', function(req, res){
+	req.session.destroy(function(err){
+		if(err){
+			console.log(err);
+		}else{
+			res.redirect('/');
+		}
+	});
+});
+
+app.get('/register', function(req, res){
+	sess=req.session;
+	if(sess.user){
+		res.redirect('/app');
+	}else{
+		res.render('register.ejs');
+	}
+});
+
+app.get('/submit', function(req, res){
 	var urlQuery = require('url').parse(req.url, true);
 	if(urlQuery.query.rmscurrent){
 		
 		var date = new Date();
 		var data = {added : date, rmscurrent : urlQuery.query.rmscurrent, rmsvolt : urlQuery.query.rmsvolt, apparent : urlQuery.query.apparent, real : urlQuery.query.real, powerfactor : 
 		urlQuery.query.powerfactor};
+		var temp_status;
+		if(urlQuery.query.light_status == "1"){
+			temp_status = 1;
+		}else{
+			temp_status = 0;
+		}
 		
-		console.log(data);
+		if(temp_status != light_status){
+			io.emit('light_change', temp_status);
+		}
+		
+		light_status = temp_status;
 		
 		io.emit('reading', data);
 		
@@ -59,8 +135,8 @@ app.get('/', function(req, res){
 		});
 	}
 	
-	
-	res.render("index",{});
+	res.setHeader('Content-Type', 'text/plain'); //or text/plain
+	res.send('Some text');
 });
 
 app.get('/clear', function(req, res){
@@ -75,13 +151,6 @@ app.get('/clear', function(req, res){
 	res.redirect('/');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-});
-
 app.get('/view', function(req, res){
 
 
@@ -92,19 +161,9 @@ app.get('/view', function(req, res){
 			res.render('view', read);
 		}
 	});
-/*
-	Reading.findOne( { rmscurrent:1}, function(err,read) {
-		console.log(read);
-	});
-	*/
+
 });
 
 http.listen(app.get('port'), function(){
   console.log('listening on *: '+app.get('port'));
 });
-
-/*
-var server = http.createServer(app).listen(app.get('port'), function(){
-	console.log('Express server listening on port ' + app.get('port'));
-});
-*/
